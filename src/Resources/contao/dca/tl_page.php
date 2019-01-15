@@ -1,10 +1,9 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = ['Anker\OpenGraphBundle\OgTagsDcaCallback', 'saveOgTags'];
-$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'ogTagsEnable';
+//$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'ogTagsEnable';
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'ogType';
-$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] .= ';{og_tags_legend},ogTagsEnable';
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogTagsEnable'] = 'ogTitle,ogType,ogImage,ogDescription,ogAudio,ogVideo,ogDeterminer,ogLocale,ogLocaleAlternate';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace('description;', 'description;{og_tags_legend:hide},ogTitle,ogType,ogImage,ogDescription,ogAudio,ogVideo,ogDeterminer,ogLocale,ogLocaleAlternate;', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
 
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogType_music.song'] = 'musicDuration,musicAlbum,musicAlbumDisc,musicAlbumTrack,musicAlbumMusician';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogType_music.album'] = 'musicAlbumMusician,musicReleaseDate';
@@ -18,15 +17,15 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogType_article'] = 'articlePublish
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogType_book'] = 'bookAuthor,bookIsbn,bookReleaseDate,bookTag';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ogType_profile'] = 'profileFirstName,profileLastName,profileUsername,profileGender';
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['ogTagsEnable'] = [
-		'label' => &$GLOBALS['TL_LANG']['tl_page']['ogTagsEnable'],
-		'inputType' => 'checkbox',
-		'eval' => [
-			'tl_class' => 'w50 m12',
-			'submitOnChange' => true,
-		],
-		'sql' => "char(1) NOT NULL default ''",
-];
+// $GLOBALS['TL_DCA']['tl_page']['fields']['ogTagsEnable'] = [
+// 		'label' => &$GLOBALS['TL_LANG']['tl_page']['ogTagsEnable'],
+// 		'inputType' => 'checkbox',
+// 		'eval' => [
+// 			'tl_class' => 'w50 m12',
+// 			'submitOnChange' => true,
+// 		],
+// 		'sql' => "char(1) NOT NULL default ''",
+// ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['ogTags'] = [
 	'sql' => "longtext NULL",

@@ -17,6 +17,8 @@ class OgTagsDcaCallback extends Backend
 	 * @var array
 	 */
 	protected $existingValues = null;
+	protected $pageTitle = '';
+	protected $pageDescription = '';
 
 	/**
 	 * @param DC_Table $DC
@@ -55,7 +57,7 @@ class OgTagsDcaCallback extends Backend
 	protected function loadExistingValues(DC_Table $DC)
 	{
 		if ($this->existingValues === null) {
-			$query = "SELECT ogTags ".
+			$query = "SELECT ogTags, pageTitle, title, description ".
 						"FROM tl_page ".
 						"WHERE id = ? ";
 			$DbResult = $this->Database->prepare($query)->execute($DC->id);
@@ -63,6 +65,8 @@ class OgTagsDcaCallback extends Backend
 				$DbResult->next();
 
 				$this->existingValues = $DbResult->ogTags != '' ? unserialize($DbResult->ogTags) : [];
+				$this->pageTitle = $DbResult->pageTitle ?: $DbResult->title;
+				$this->pageDescription = $DbResult->description ?: $DbResult->description;
 			}
 
 			if (!isset($this->existingValues) || !is_array($this->existingValues)) {
@@ -85,7 +89,7 @@ class OgTagsDcaCallback extends Backend
 	{
 		$this->loadExistingValues($DC);
 
-		return isset($this->existingValues['ogTitle']) ? (string)$this->existingValues['ogTitle'] : '';
+		return isset($this->existingValues['ogTitle']) ? (empty((string)$this->existingValues['ogTitle']) ? $this->pageTitle : (string)$this->existingValues['ogTitle']) : '';
 	}
 
 	/**
@@ -97,7 +101,7 @@ class OgTagsDcaCallback extends Backend
 	{
 		$this->loadExistingValues($DC);
 
-		return isset($this->existingValues['ogDescription']) ? (string)$this->existingValues['ogDescription'] : '';
+		return isset($this->existingValues['ogDescription']) ? (empty((string)$this->existingValues['ogDescription']) ? $this->pageDescription : (string)$this->existingValues['ogDescription']) : '';
 	}
 
 	/**
